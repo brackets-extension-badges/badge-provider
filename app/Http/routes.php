@@ -15,6 +15,7 @@ $app->get('/', function () use ($app) {
     return $app->version();
 });
 
-$app->get('/update/{secret}',['as' => 'update', 'uses' => 'DataController@update']);
+$app->get('/update/{secret}', ['as' => 'update', 'uses' => 'DataController@update']);
 
-$app->get('/{extensionId}/total.svg',['as' => 'badge', 'uses' => 'BadgeController@getBadge', 'method' => 'total']);
+$app->get('/{extensionId}/{method}.svg', ['as' => 'badge', 'uses' => 'BadgeController@getBadge']);
+$app->get('/{extensionId}/stats.json', ['as' => 'stats', 'uses' => 'BadgeController@getStats']);
