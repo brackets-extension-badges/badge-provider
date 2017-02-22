@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Extension;
+use App\Services\MeasureService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\App;
 
 class BadgeController extends Controller
 {
@@ -19,8 +21,16 @@ class BadgeController extends Controller
             //TODO return 'unknown' badge
         }
 
+        $measurer = App::make('MeasureService');
+
+        $text = '123';
+        $widths = [
+            MeasureService::DOWNLOADS_WIDTH + 10,
+            $measurer->measureTextWidth($text) + 10
+        ];
+
         //TODO compute width
-        return response(view('badge')->with(['text' => $extensionId, 'width' => 1]))->header('Content-Type', 'image/svg+xml;charset=utf-8');
+        return response(view('badge')->with(['text' => $text, 'widths' => $widths]))->header('Content-Type', 'image/svg+xml;charset=utf-8');
     }
 
     public function getStats($extensionId)
