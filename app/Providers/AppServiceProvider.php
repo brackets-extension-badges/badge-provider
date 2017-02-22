@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Services\MeasureService;
+use App\Services\BadgeUtils;
 use App\Services\UpdateService;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,8 +19,8 @@ class AppServiceProvider extends ServiceProvider
             return new UpdateService();
         });
 
-        $this->app->singleton('MeasureService', function () {
-            return new MeasureService();
+        $this->app->singleton('BadgeUtils', function () {
+            return new BadgeUtils();
         });
     }
 }

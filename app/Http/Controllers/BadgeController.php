@@ -3,33 +3,46 @@
 namespace App\Http\Controllers;
 
 use App\Extension;
-use App\Services\MeasureService;
+use App\Services\BadgeUtils;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\App;
 
 class BadgeController extends Controller
 {
-    public function __construct()
-    {
-        //
-    }
-
     public function getBadge($extensionId, $method)
     {
         $extension = Extension::Find($extensionId);
-        if (is_null($extension)) {
-            //TODO return 'unknown' badge
+        $availableMethods = [BadgeUtils::TOTAL, BadgeUtils::LAST_VERSION, BadgeUtils::WEEK, BadgeUtils::DAY];
+
+        if (is_null($extension) || !in_array($method, $availableMethods)) {
+            return $this->getUnknownBadge();
         }
 
-        $measurer = App::make('MeasureService');
+        switch ($method) {
+            case BadgeUtils::TOTAL:
+                $downloads = $extension->totalDownloads;
+                break;
+            case BadgeUtils::LAST_VERSION:
+                $downloads = $extension->lastVersionDownloads;
+                break;
+            case BadgeUtils::WEEK:
+                $downloads = $extension->weekDownloads;
+                break;
+            case BadgeUtils::DAY:
+                $downloads = $extension->weekDownloads / 7;
+                break;
+            default:
+                $downloads = 0;
+        }
 
-        $text = '123';
+        $text = BadgeUtils::formatNumber($downloads);
+
         $widths = [
-            MeasureService::DOWNLOADS_WIDTH + 10,
-            $measurer->measureTextWidth($text) + 10
+            BadgeUtils::DOWNLOADS_WIDTH + 10,
+            BadgeUtils::measureTextWidth($text) + 10 + BadgeUtils::getSuffixWidth($method)
         ];
 
-        //TODO compute width
+        $text .= BadgeUtils::getSuffix($method);
+
         return response(view('badge')->with(['text' => $text, 'widths' => $widths]))->header('Content-Type', 'image/svg+xml;charset=utf-8');
     }
 
@@ -49,5 +62,9 @@ class BadgeController extends Controller
             'week' => $extension->weekDownloads,
         ]);
     }
-    //
+
+    private function getUnknownBadge()
+    {
+        return response(view('unknownBadge'))->header('Content-Type', 'image/svg+xml;charset=utf-8');
+    }
 }
