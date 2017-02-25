@@ -98,6 +98,8 @@ services:
             context: ./mysql
             args:
                 - MYSQL_DATABASE=badges
+                - MYSQL_USER=user
+                - MYSQL_PASSWORD=secret
                 - MYSQL_ROOT_PASSWORD=root
         volumes:
             - mysql:/var/lib/mysql
