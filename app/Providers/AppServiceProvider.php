@@ -22,5 +22,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('BadgeUtils', function () {
             return new BadgeUtils();
         });
+
+        $this->app->singleton('filesystem', function ($app) {
+            return $app->loadComponent('filesystems', 'Illuminate\Filesystem\FilesystemServiceProvider', 'filesystem');
+        });
     }
 }
