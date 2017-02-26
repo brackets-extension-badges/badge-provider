@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Extension;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 
 class UpdateService
 {
@@ -33,6 +34,7 @@ class UpdateService
         }
 
         $weekDays = $this->getWeekDays();
+        $list = [];
 
         foreach ($results->registry as $result) {
 
@@ -40,18 +42,23 @@ class UpdateService
 
             if (isset($result->totalDownloads)) {
                 $extension->totalDownloads = $result->totalDownloads;
+                $list[$result->metadata->name] = $result->totalDownloads;
             }
 
             if (isset($result->versions) && sizeof($result->versions) > 0 && isset(array_last($result->versions)->downloads)) {
-                $extension-> lastVersionDownloads = array_last($result->versions)->downloads;
+                $extension->lastVersionDownloads = array_last($result->versions)->downloads;
             }
-
 
             if (isset($result->recent)) {
                 $extension->weekDownloads = $this->getWeekDownloads($result->recent, $weekDays);
             }
 
             $extension->save();
+        }
+
+        $ok = Storage::put('list.json', json_encode($list));
+        if ($ok !== true) {
+            abort(500, 'Cannot write extension list on disk');
         }
 
         return new JsonResponse(['status' => 'ok', 'extensions' => sizeof($results->registry)]);

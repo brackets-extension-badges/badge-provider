@@ -19,3 +19,10 @@ $app->get('/update/{secret}', ['as' => 'update', 'uses' => 'DataController@updat
 
 $app->get('/{extensionId}/{method}.svg', ['as' => 'badge', 'uses' => 'BadgeController@getBadge']);
 $app->get('/{extensionId}/stats.json', ['as' => 'stats', 'uses' => 'BadgeController@getStats']);
+
+$app->get('/list.json', function () {
+    if(!\Illuminate\Support\Facades\Storage::exists('list.json')) {
+        return '{}';
+    }
+    return \Illuminate\Support\Facades\Storage::get('list.json');
+});
