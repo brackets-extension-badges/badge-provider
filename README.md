@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/brackets-extension-badges/badge-provider-nodejs.svg?branch=master)](https://travis-ci.org/brackets-extension-badges/badge-provider-nodejs)
-
 # PHP badge provider
 
 ![brackets-extension-badges](https://cloud.githubusercontent.com/assets/17952318/24578041/b908d05e-16d8-11e7-9152-47b66656ee0e.gif)
