@@ -56,7 +56,7 @@ class BadgeController extends Controller
             ]);
         }
         return new JsonResponse([
-            'name' => $extension->id,
+            'name' => $extensionId,
             'total' => $extension->totalDownloads,
             'lastVersion' => $extension->lastVersionDownloads,
             'week' => $extension->weekDownloads,
