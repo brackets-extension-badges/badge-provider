@@ -27,7 +27,7 @@ The PHP version of the server is the original one, but **the development has bee
 
 ## Finding the extension name
 
-The *name* of an extension is definded in the `package.json` file, at the root of the extension.
+The *name* of an extension is defined in the `package.json` file, at the root of the extension.
 
 ## Deployment
 
@@ -35,4 +35,4 @@ The badge provider is a Lumen application with a MySQL database. It can be easil
 
 Deploying requires `git`, `docker` and `docker-compose`.
 
-Check out the [Deployment](https://github.com/brackets-extension-badges/badge-provider-php/wiki/Deployment) page of the wiki for detailled steps.
+Check out the [Deployment](https://github.com/brackets-extension-badges/badge-provider-php/wiki/Deployment) page of the wiki for detailed steps.
