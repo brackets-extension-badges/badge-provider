@@ -12,7 +12,7 @@
 */
 
 $app->get('/', function () use ($app) {
-    return $app->version();
+    return redirect(env('HOME_PAGE'));
 });
 
 $app->get('/update/{secret}', ['as' => 'update', 'uses' => 'DataController@update']);
@@ -21,7 +21,7 @@ $app->get('/{extensionId}/{method}.svg', ['as' => 'badge', 'uses' => 'BadgeContr
 $app->get('/{extensionId}/stats.json', ['as' => 'stats', 'uses' => 'BadgeController@getStats']);
 
 $app->get('/list.json', function () {
-    if(!\Illuminate\Support\Facades\Storage::exists('list.json')) {
+    if (!\Illuminate\Support\Facades\Storage::exists('list.json')) {
         return '{}';
     }
     return \Illuminate\Support\Facades\Storage::get('list.json');
